@@ -160,42 +160,18 @@ export default function ProductChecker({ url }: ProductCheckerProps) {
           <p className={`mt-1 text-sm ${s.text}`}>{reason}</p>
 
           {price_estimate && (
-            <div className="mt-3 rounded-md bg-white/60 border border-stone-200 px-3 py-2 text-sm text-stone-700">
-              <p className="font-semibold text-stone-800 mb-1">
-                {locale === "ru" ? "Примерная стоимость" : "Estimated cost"}
-              </p>
-              <div className="space-y-0.5">
-                <div className="flex justify-between">
-                  <span>{locale === "ru" ? "Товар" : "Product"}</span>
-                  <span>${price_estimate.product_usd.toFixed(2)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>{locale === "ru" ? "Налог Калифорнии (7.25%)" : "California tax (7.25%)"}</span>
-                  <span>${price_estimate.sales_tax_usd.toFixed(2)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>{locale === "ru" ? "Доставка" : "Delivery"}</span>
-                  <span>${price_estimate.delivery_usd}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>{locale === "ru" ? "Наша комиссия" : "Service fee"}</span>
-                  <span>${price_estimate.overhead_usd}</span>
-                </div>
-                <div className="flex justify-between font-semibold text-stone-900 border-t border-stone-200 pt-1 mt-1">
-                  <span>{locale === "ru" ? "Итого" : "Total"}</span>
-                  <span>
-                    ${price_estimate.total_usd.toFixed(2)}{" "}
-                    <span className="text-stone-500 font-normal">
-                      ≈ {price_estimate.total_rub.toLocaleString("ru-RU")} ₽
-                    </span>
+            <div className="mt-3 rounded-md bg-white/60 border border-stone-200 px-3 py-2 text-sm">
+              <div className="flex items-baseline justify-between gap-2">
+                <span className="text-stone-500">
+                  {locale === "ru" ? "Доставка под ключ" : "Turnkey delivery"}
+                </span>
+                <span className="font-semibold text-stone-900 whitespace-nowrap">
+                  ${price_estimate.total_usd.toFixed(2)}{" "}
+                  <span className="text-stone-500 font-normal">
+                    ≈ {price_estimate.total_rub.toLocaleString("ru-RU")} ₽
                   </span>
-                </div>
+                </span>
               </div>
-              <p className="mt-1.5 text-xs text-stone-400">
-                {locale === "ru"
-                  ? `Курс ₽${price_estimate.rate} за $1`
-                  : `Rate: ₽${price_estimate.rate} per $1`}
-              </p>
             </div>
           )}
         </div>

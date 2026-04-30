@@ -7,7 +7,7 @@ const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
 const USD_TO_EUR = 0.92;
 const PRICE_CAP_EUR = 200;
-const DELIVERY_FEE_USD = 50;
+const DELIVERY_FEE_USD = 70;
 const OVERHEAD_USD = 200;
 const CA_SALES_TAX_RATE = 0.0725;
 
@@ -133,14 +133,16 @@ async function fetchProductInfo(url: string): Promise<ProductInfo> {
 }
 
 export type PriceEstimate = {
-  product_usd: number;
-  sales_tax_usd: number;
-  delivery_usd: number;
-  overhead_usd: number;
   total_usd: number;
   total_rub: number;
   rate: number;
 };
+
+function roundUpTo9_99(amount: number): number {
+  const cents = Math.round(amount * 100);
+  const rem = cents % 1000;
+  return rem === 999 ? amount : (cents + (999 - rem)) / 100;
+}
 
 export type CheckResult = {
   verdict: "allowed" | "banned" | "warning" | "error";
@@ -184,16 +186,13 @@ async function withPriceEstimate(
   if (productUsd === null) return { ...result, price_estimate: null };
   const rate = await fetchUsdToRubRate();
   if (rate === null) return { ...result, price_estimate: null };
-  const salesTaxUsd = Math.round(productUsd * CA_SALES_TAX_RATE * 100) / 100;
-  const totalUsd = productUsd + salesTaxUsd + DELIVERY_FEE_USD + OVERHEAD_USD;
+  const salesTaxUsd = productUsd * CA_SALES_TAX_RATE;
+  const rawTotal = productUsd + salesTaxUsd + DELIVERY_FEE_USD + OVERHEAD_USD;
+  const totalUsd = roundUpTo9_99(rawTotal);
   return {
     ...result,
     price_estimate: {
-      product_usd: Math.round(productUsd * 100) / 100,
-      sales_tax_usd: salesTaxUsd,
-      delivery_usd: DELIVERY_FEE_USD,
-      overhead_usd: OVERHEAD_USD,
-      total_usd: Math.round(totalUsd * 100) / 100,
+      total_usd: totalUsd,
       total_rub: Math.round(totalUsd * rate),
       rate: Math.round(rate),
     },
