@@ -4,13 +4,13 @@ export const translations = {
   en: {
     // Header
     siteName: "Kotobus",
-    tagline: "Will deliver anything from the USA.",
+    tagline: "Will deliver your purchase from the USA.",
     switchLang: "RU",
 
     // Hero
-    heroTitle: "Will deliver anything from the USA.",
+    heroTitle: "Will deliver your purchase from the USA.",
     heroSubtitle:
-      "Send Kotobus a link to any product from an American store. It will buy it and deliver it to the post office nearest your address.",
+      "Send Kotobus a link to a product from an American store. It will buy it and deliver it to the post office nearest your address.",
     howItWorks: "How Kotobus works",
     step1Title: "1. Send a link",
     step1Desc: "Paste a link to anything from any American store.",
@@ -65,13 +65,13 @@ export const translations = {
   ru: {
     // Header
     siteName: "Котобус",
-    tagline: "Привезёт что угодно из США.",
+    tagline: "Доставит покупку из США.",
     switchLang: "EN",
 
     // Hero
-    heroTitle: "Доставит что угодно из США.",
+    heroTitle: "Доставит покупку из США.",
     heroSubtitle:
-      "Кидайте Котобусу ссылку на любой товар из американского магазина. Он его купит и привезёт до ближайшего отделения почты.",
+      "Кидайте Котобусу ссылку на товар из американского магазина. Он его купит и привезёт до ближайшего отделения почты.",
     howItWorks: "Как работает Котобус",
     step1Title: "1. Кидайте ссылку",
     step1Desc: "Вставьте ссылку на что угодно из любого американского магазина.",
