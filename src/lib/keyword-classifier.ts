@@ -125,8 +125,8 @@ export function classifyWithKeywords(productInfo: string): CheckResult {
     return {
       verdict: "allowed",
       carriers: [],
-      reason_en: "Product appears to be in the allowed categories.",
-      reason_ru: "Товар, по-видимому, относится к разрешённым категориям.",
+      reason_en: "Product is allowed for delivery.",
+      reason_ru: "Товар разрешен к доставке.",
       product_name,
     };
   }
