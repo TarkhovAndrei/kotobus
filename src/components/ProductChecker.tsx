@@ -163,13 +163,10 @@ export default function ProductChecker({ url }: ProductCheckerProps) {
             <div className="mt-3 rounded-md bg-white/60 border border-stone-200 px-3 py-2 text-sm">
               <div className="flex items-baseline justify-between gap-2">
                 <span className="text-stone-500">
-                  {locale === "ru" ? "Доставка под ключ" : "Turnkey delivery"}
+                  {locale === "ru" ? "Полная стоимость с доставкой" : "Total cost with delivery"}
                 </span>
                 <span className="font-semibold text-stone-900 whitespace-nowrap">
-                  ${price_estimate.total_usd.toFixed(2)}{" "}
-                  <span className="text-stone-500 font-normal">
-                    ≈ {price_estimate.total_rub.toLocaleString("ru-RU")} ₽
-                  </span>
+                  {price_estimate.total_rub.toLocaleString("ru-RU", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ₽
                 </span>
               </div>
             </div>

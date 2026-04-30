@@ -133,9 +133,7 @@ async function fetchProductInfo(url: string): Promise<ProductInfo> {
 }
 
 export type PriceEstimate = {
-  total_usd: number;
   total_rub: number;
-  rate: number;
 };
 
 function roundUpTo9_99(amount: number): number {
@@ -188,13 +186,11 @@ async function withPriceEstimate(
   if (rate === null) return { ...result, price_estimate: null };
   const salesTaxUsd = productUsd * CA_SALES_TAX_RATE;
   const rawTotal = productUsd + salesTaxUsd + DELIVERY_FEE_USD + OVERHEAD_USD;
-  const totalUsd = roundUpTo9_99(rawTotal);
+  const totalRub = roundUpTo9_99(rawTotal * rate);
   return {
     ...result,
     price_estimate: {
-      total_usd: totalUsd,
-      total_rub: Math.round(totalUsd * rate),
-      rate: Math.round(rate),
+      total_rub: totalRub,
     },
   };
 }
