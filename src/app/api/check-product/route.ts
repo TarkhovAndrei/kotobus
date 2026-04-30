@@ -133,6 +133,7 @@ async function fetchProductInfo(url: string): Promise<ProductInfo> {
 
 export type CheckResult = {
   verdict: "allowed" | "banned" | "warning" | "error";
+  carriers: string[];
   reason_en: string;
   reason_ru: string;
   product_name: string;
