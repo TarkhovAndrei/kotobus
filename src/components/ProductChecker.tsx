@@ -158,18 +158,6 @@ export default function ProductChecker({ url }: ProductCheckerProps) {
           </div>
           <p className={`mt-1 text-sm ${s.text}`}>{reason}</p>
 
-          {(carriers ?? []).length > 0 && (
-            <div className="mt-2 flex flex-wrap gap-1">
-              {carriers.map((c) => (
-                <span
-                  key={c}
-                  className={`rounded-full px-2 py-0.5 text-xs font-medium ${s.badge}`}
-                >
-                  {c}
-                </span>
-              ))}
-            </div>
-          )}
         </div>
       </div>
     </div>

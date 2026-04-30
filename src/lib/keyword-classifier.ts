@@ -124,7 +124,7 @@ export function classifyWithKeywords(productInfo: string): CheckResult {
   if (isLikelyAllowed) {
     return {
       verdict: "allowed",
-      carriers: ["VLSK Corp", "Berlin Post", "East Cargo", "VLSK Cargo", "Euro Cargo", "Euro Post"],
+      carriers: [],
       reason_en: "Product appears to be in the allowed categories. (Keyword-based check — for an accurate AI check, top up your Anthropic credits.)",
       reason_ru: "Товар, по-видимому, относится к разрешённым категориям. (Проверка по ключевым словам — для точной AI-проверки пополните баланс Anthropic.)",
       product_name,
@@ -134,9 +134,9 @@ export function classifyWithKeywords(productInfo: string): CheckResult {
   // No clear signal — show a warning
   return {
     verdict: "warning",
-    carriers: ["VLSK Corp", "Berlin Post", "East Cargo", "VLSK Cargo", "Euro Cargo", "Euro Post"],
-    reason_en: "Could not automatically classify this product. Please verify manually against the allowed/banned lists.",
-    reason_ru: "Не удалось автоматически определить категорию товара. Пожалуйста, проверьте его вручную по спискам.",
+    carriers: [],
+    reason_en: "Could not automatically classify this product. Place an order and we'll verify it manually.",
+    reason_ru: "Не удалось автоматически определить категорию товара. Отправьте заказ, и мы проверим его вручную.",
     product_name,
   };
 }
