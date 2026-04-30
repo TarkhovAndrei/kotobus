@@ -112,8 +112,8 @@ export function classifyWithKeywords(productInfo: string): CheckResult {
       return {
         verdict: "banned",
         carriers: [],
-        reason_en: `${reason_en} (Keyword check — for accurate AI check, top up your Anthropic credits.)`,
-        reason_ru: `${reason_ru} (Проверка по ключевым словам — для точной AI-проверки пополните баланс Anthropic.)`,
+        reason_en: reason_en,
+        reason_ru: reason_ru,
         product_name,
       };
     }
@@ -125,8 +125,8 @@ export function classifyWithKeywords(productInfo: string): CheckResult {
     return {
       verdict: "allowed",
       carriers: [],
-      reason_en: "Product appears to be in the allowed categories. (Keyword-based check — for an accurate AI check, top up your Anthropic credits.)",
-      reason_ru: "Товар, по-видимому, относится к разрешённым категориям. (Проверка по ключевым словам — для точной AI-проверки пополните баланс Anthropic.)",
+      reason_en: "Product appears to be in the allowed categories.",
+      reason_ru: "Товар, по-видимому, относится к разрешённым категориям.",
       product_name,
     };
   }
