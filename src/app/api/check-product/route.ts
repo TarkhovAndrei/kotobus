@@ -136,10 +136,10 @@ export type PriceEstimate = {
   total_rub: number;
 };
 
-function roundUpTo9_99(amount: number): number {
-  const cents = Math.round(amount * 100);
-  const rem = cents % 1000;
-  return rem === 999 ? amount : (cents + (999 - rem)) / 100;
+function roundUpTo999_99(amount: number): number {
+  const kopecks = Math.round(amount * 100);
+  const rem = kopecks % 100000;
+  return rem === 99999 ? amount : (kopecks + (99999 - rem)) / 100;
 }
 
 export type CheckResult = {
@@ -186,7 +186,7 @@ async function withPriceEstimate(
   if (rate === null) return { ...result, price_estimate: null };
   const salesTaxUsd = productUsd * CA_SALES_TAX_RATE;
   const rawTotal = productUsd + salesTaxUsd + DELIVERY_FEE_USD + OVERHEAD_USD;
-  const totalRub = roundUpTo9_99(rawTotal * rate);
+  const totalRub = roundUpTo999_99(rawTotal * rate);
   return {
     ...result,
     price_estimate: {
