@@ -5,10 +5,11 @@ import { classifyWithKeywords } from "@/lib/keyword-classifier";
 
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
-/** Approximate USD→EUR conversion rate used for the €200 cap check. */
 const USD_TO_EUR = 0.92;
-/** €200 cap from Berlin Post / Euro Cargo / Euro Post rules. */
 const PRICE_CAP_EUR = 200;
+const DELIVERY_FEE_USD = 50;
+const OVERHEAD_USD = 200;
+const CA_SALES_TAX_RATE = 0.0725;
 
 type ProductInfo = {
   text: string;
@@ -131,13 +132,73 @@ async function fetchProductInfo(url: string): Promise<ProductInfo> {
   return { text, priceEur, rawPrice };
 }
 
+export type PriceEstimate = {
+  product_usd: number;
+  sales_tax_usd: number;
+  delivery_usd: number;
+  overhead_usd: number;
+  total_usd: number;
+  total_rub: number;
+  rate: number;
+};
+
 export type CheckResult = {
   verdict: "allowed" | "banned" | "warning" | "error";
   carriers: string[];
   reason_en: string;
   reason_ru: string;
   product_name: string;
+  price_estimate: PriceEstimate | null;
 };
+
+async function fetchUsdToRubRate(): Promise<number | null> {
+  try {
+    const res = await fetch(
+      "https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/usd.json",
+      { signal: AbortSignal.timeout(4000) }
+    );
+    const data = await res.json();
+    return typeof data.usd?.rub === "number" ? data.usd.rub : null;
+  } catch {
+    return null;
+  }
+}
+
+function extractUsdFromRaw(rawPrice: string | null): number | null {
+  if (!rawPrice) return null;
+  const m = rawPrice.match(/^(USD|EUR)\s+([\d.]+)$/);
+  if (!m) return null;
+  const num = parseFloat(m[2]);
+  if (!isFinite(num) || num <= 0) return null;
+  return m[1] === "USD" ? num : num / USD_TO_EUR;
+}
+
+async function withPriceEstimate(
+  result: Omit<CheckResult, "price_estimate">,
+  productInfo: ProductInfo
+): Promise<CheckResult> {
+  if (result.verdict !== "allowed" && result.verdict !== "warning") {
+    return { ...result, price_estimate: null };
+  }
+  const productUsd = extractUsdFromRaw(productInfo.rawPrice);
+  if (productUsd === null) return { ...result, price_estimate: null };
+  const rate = await fetchUsdToRubRate();
+  if (rate === null) return { ...result, price_estimate: null };
+  const salesTaxUsd = Math.round(productUsd * CA_SALES_TAX_RATE * 100) / 100;
+  const totalUsd = productUsd + salesTaxUsd + DELIVERY_FEE_USD + OVERHEAD_USD;
+  return {
+    ...result,
+    price_estimate: {
+      product_usd: Math.round(productUsd * 100) / 100,
+      sales_tax_usd: salesTaxUsd,
+      delivery_usd: DELIVERY_FEE_USD,
+      overhead_usd: OVERHEAD_USD,
+      total_usd: Math.round(totalUsd * 100) / 100,
+      total_rub: Math.round(totalUsd * rate),
+      rate: Math.round(rate),
+    },
+  };
+}
 
 export async function POST(request: Request) {
   try {
@@ -170,6 +231,7 @@ export async function POST(request: Request) {
         reason_en: `Item price ≈ €${eur} exceeds the €${PRICE_CAP_EUR} per-item cap — cannot be shipped on any carrier.`,
         reason_ru: `Цена товара ≈ €${eur} превышает лимит €${PRICE_CAP_EUR} за единицу — отправка невозможна ни одним из операторов.`,
         product_name,
+        price_estimate: null,
       } satisfies CheckResult);
     }
 
@@ -192,7 +254,11 @@ export async function POST(request: Request) {
           message.content[0].type === "text" ? message.content[0].text : "";
         const jsonMatch = text.match(/\{[\s\S]*\}/);
         if (jsonMatch) {
-          const result: CheckResult = JSON.parse(jsonMatch[0]);
+          const parsed = JSON.parse(jsonMatch[0]);
+          const result = await withPriceEstimate(
+            { ...parsed, carriers: parsed.carriers ?? [] },
+            productInfo
+          );
           return NextResponse.json(result);
         }
       } catch (err) {
@@ -201,7 +267,8 @@ export async function POST(request: Request) {
     }
 
     // Fallback: keyword-based classifier
-    return NextResponse.json(classifyWithKeywords(productInfo.text));
+    const kwResult = await withPriceEstimate(classifyWithKeywords(productInfo.text), productInfo);
+    return NextResponse.json(kwResult);
   } catch (error) {
     console.error("check-product error:", error);
     return NextResponse.json(
@@ -211,6 +278,7 @@ export async function POST(request: Request) {
         reason_en: "Could not check this product. Please verify manually.",
         reason_ru: "Не удалось проверить товар. Пожалуйста, проверьте вручную.",
         product_name: "",
+        price_estimate: null,
       } satisfies CheckResult,
       { status: 200 }
     );

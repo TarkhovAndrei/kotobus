@@ -113,6 +113,7 @@ export function classifyWithKeywords(productInfo: string): CheckResult {
         reason_en: reason_en,
         reason_ru: reason_ru,
         product_name,
+        price_estimate: null,
       };
     }
   }
@@ -126,6 +127,7 @@ export function classifyWithKeywords(productInfo: string): CheckResult {
       reason_en: "Product is allowed for delivery.",
       reason_ru: "Товар разрешен к доставке.",
       product_name,
+      price_estimate: null,
     };
   }
 
@@ -136,5 +138,6 @@ export function classifyWithKeywords(productInfo: string): CheckResult {
     reason_en: "Could not automatically classify this product. Place an order and we'll verify it manually.",
     reason_ru: "Не удалось автоматически определить категорию товара. Отправьте заказ, и мы проверим его вручную.",
     product_name,
+    price_estimate: null,
   };
 }
