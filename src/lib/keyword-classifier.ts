@@ -26,9 +26,9 @@ const BANNED_PATTERNS: Array<{ pattern: RegExp; reason_en: string; reason_ru: st
   { pattern: /\b(ssd|nvme|hard\s+drive|hdd|ram\s+(ddr|memory)|ddr[345])\b/i,
     reason_en: "PC components (storage/memory) are banned.",
     reason_ru: "Комплектующие ПК (накопители/память) запрещены." },
-  { pattern: /\b(monitor|display|4k\s+(tv|screen)|computer\s+case|pc\s+case|motherboard)\b/i,
-    reason_en: "PC components (monitors/cases/motherboards) are banned.",
-    reason_ru: "Комплектующие ПК (мониторы/корпуса/мат.платы) запрещены." },
+  { pattern: /\b(monitor|display|4k\s+(tv|screen)|computer\s+case|pc\s+case|motherboard|gaming\s+(keyboard|mouse)|computer\s+(keyboard|mouse)|mechanical\s+keyboard)\b/i,
+    reason_en: "PC components (monitors, cases, motherboards, keyboards, mice) are banned.",
+    reason_ru: "Комплектующие ПК (мониторы, корпуса, мат.платы, клавиатуры, мыши) запрещены." },
   { pattern: /\b(headphones?|earbuds?|airpods|bluetooth\s+speaker|soundbar|subwoofer|home\s+theater)\b/i,
     reason_en: "Audio equipment (speakers, headphones) is banned.",
     reason_ru: "Аудиотехника (колонки, наушники) запрещена." },
@@ -72,20 +72,17 @@ const BANNED_PATTERNS: Array<{ pattern: RegExp; reason_en: string; reason_ru: st
     reason_en: "Prescription medicines are banned.",
     reason_ru: "Рецептурные лекарства запрещены." },
   { pattern: /\b(playstation|ps[345]|xbox|nintendo\s+switch|gaming\s+console)\b/i,
-    reason_en: "Game consoles are restricted (Berlin Post: only under €200; VLSK: generally banned).",
-    reason_ru: "Игровые консоли ограничены (Berlin Post — до €200; VLSK — как правило запрещены)." },
-  { pattern: /\b(guitar|piano|keyboard\s+(synth|piano)|drum\s+(set|kit)|saxophone|trumpet|violin|dj\s+(controller|console))\b/i,
-    reason_en: "Musical instruments are banned.",
-    reason_ru: "Музыкальные инструменты запрещены." },
-  { pattern: /\b(rc\s+car|rc\s+plane|rc\s+helicopter|remote\s+control\s+car|radio\s+control)\b/i,
+    reason_en: "Game consoles are banned.",
+    reason_ru: "Игровые консоли запрещены." },
+  { pattern: /\b(dj\s+(controller|console|mixer|deck)|sound\s+(effector|processor)|midi\s+controller|synthesizer)\b/i,
+    reason_en: "Electronic musical instruments (DJ equipment, synthesizers) are banned.",
+    reason_ru: "Электронные музыкальные инструменты (DJ-оборудование, синтезаторы) запрещены." },
+  { pattern: /\b(rc\s+car|rc\s+plane|rc\s+helicopter|rc\s+train|remote\s+control\s+(car|plane|train)|radio\s+control(led)?)\b/i,
     reason_en: "RC and motorized toys are banned.",
-    reason_ru: "Радиоуправляемые игрушки запрещены." },
+    reason_ru: "Радиоуправляемые и моторизованные игрушки запрещены." },
   { pattern: /\b(brake\s+pad|spark\s+plug|alternator|carburetor|engine\s+part|motorcycle\s+part)\b/i,
     reason_en: "Auto and motorcycle parts are banned.",
     reason_ru: "Авто- и мотозапчасти запрещены." },
-  { pattern: /\b(vinyl\s+record|cd\s+album|dvd\s+(movie|disc|set)|blu-?ray)\b/i,
-    reason_en: "Vinyl records, CDs and DVDs are banned.",
-    reason_ru: "Виниловые пластинки, CD и DVD запрещены." },
 ];
 
 // "Allowed-leaning" patterns help override accidental matches and confirm safe categories
@@ -97,6 +94,7 @@ const ALLOWED_HINTS: RegExp[] = [
   /\b(toy|lego|puzzle|board\s+game|doll|action\s+figure)\b/i,
   /\b(deodorant|toothpaste|lip\s+balm|shower\s+gel|liquid\s+soap|perfume|cologne)\b/i,
   /\b(handbag|wallet|belt|leather\s+(bag|wallet|jacket))\b/i,
+  /\b(acoustic\s+guitar|classical\s+guitar|violin|cello|saxophone|trumpet|flute|ukulele|harmonica)\b/i,
 ];
 
 export function classifyWithKeywords(productInfo: string): CheckResult {

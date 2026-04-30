@@ -1,9 +1,3 @@
-/**
- * Shipping eligibility rules for Kotobus.
- * Consolidated allow/ban policy: an item is allowed if any of our partners
- * accepts it, and only banned if every partner refuses it.
- */
-
 export const SHIPPING_RULES_PROMPT = `
 You are a shipping eligibility checker for Kotobus, a US-to-Russia parcel
 forwarding service. Determine whether a product can be shipped under the
@@ -24,28 +18,31 @@ return verdict "banned" regardless of category.
 - Toys, board games, puzzles, plush, action figures, LEGO
 - Natural leather goods (small quantities)
 - Non-liquid, non-perishable food products (coffee, tea, spices, snacks, chocolate)
-- Watches (under €200/piece)
-- Battery-powered hand tools
+- Watches (under €200/piece, up to 2 per package)
+- Battery-powered hand tools (up to 2 sets per package)
 - Vinyl records, CDs, DVDs, Blu-ray
-- Optical equipment: binoculars, telescopes, camera lenses
-- Musical instruments (acoustic and most electronic, under €200)
+- Acoustic musical instruments
 
 ## BANNED CATEGORIES
 - Smartphones and mobile phones (any type)
 - Laptops, tablets, assembled PCs
 - Smartwatches and fitness trackers
 - Digital cameras and camcorders (photo & video)
+- Camera lenses and objectives
 - PC components and electronic components
-  (GPUs, RAM, SSDs/HDDs, motherboards, monitors, transistors, chips)
+  (GPUs, RAM, SSDs/HDDs, motherboards, monitors, keyboards, mice, cases,
+   transistors, chips, circuit boards)
 - Audio equipment: speakers, headphones, soundbars, amplifiers, microphones,
   dictaphones, home-theater systems
+- Electronic musical instruments (DJ consoles, controllers, mixers, sound effectors)
 - GPS navigators, fish finders, echo sounders, chartplotters
 - Routers and networking equipment
 - Drones and quadcopters
+- RC and motorized toys (cars, trains, planes, helicopters)
 - Weapons: firearms, ammunition, bladed weapons, swords, machetes
 - Alcohol of any kind
 - Tobacco, cigarettes, cigars, vapes, nicotine products
-- Narcotics and prescription medicines
+- Narcotics and medicines (prescription and general)
 - Military / dual-use items
 - Game consoles
 - Automotive / motorcycle oils, petroleum products, fuels (hazmat)
@@ -77,11 +74,10 @@ export const ALLOWED_ITEMS_SUMMARY = {
     "Toys, board games, puzzles, plush, LEGO",
     "Natural leather goods",
     "Non-liquid, non-perishable food (coffee, tea, spices, chocolate, snacks)",
-    "Watches (under €200/piece)",
-    "Battery-powered hand tools",
+    "Watches (under €200/piece, up to 2 per package)",
+    "Battery-powered hand tools (up to 2 sets per package)",
     "Vinyl records, CDs, DVDs, Blu-ray",
-    "Binoculars, telescopes, camera lenses",
-    "Acoustic & most electronic musical instruments (under €200)",
+    "Acoustic musical instruments",
   ],
   ru: [
     "Одежда, обувь и аксессуары",
@@ -93,11 +89,10 @@ export const ALLOWED_ITEMS_SUMMARY = {
     "Игрушки, настольные игры, пазлы, плюшевые игрушки, LEGO",
     "Изделия из натуральной кожи",
     "Сухие и не скоропортящиеся продукты (кофе, чай, специи, шоколад, снеки)",
-    "Часы (до €200 за штуку)",
-    "Ручные инструменты на аккумуляторе",
+    "Часы (до €200 за штуку, до 2 единиц в посылке)",
+    "Ручные инструменты на аккумуляторе (до 2 наборов в посылке)",
     "Виниловые пластинки, CD, DVD, Blu-ray",
-    "Бинокли, телескопы, объективы для камер",
-    "Акустические и большинство электронных музыкальных инструментов (до €200)",
+    "Акустические музыкальные инструменты",
   ],
 };
 
@@ -108,16 +103,19 @@ export const BANNED_ITEMS_SUMMARY = {
     "Laptops, tablets, assembled PCs",
     "Smartwatches & fitness trackers",
     "Digital cameras & camcorders",
-    "PC components (GPU, RAM, SSD/HDD, motherboards, monitors)",
+    "Camera lenses & objectives",
+    "PC components (GPU, RAM, SSD/HDD, motherboards, monitors, keyboards, mice, cases)",
     "Electronic components (boards, chips, transistors)",
     "Speakers, headphones, soundbars, amplifiers, microphones, dictaphones",
+    "Electronic musical instruments (DJ consoles, controllers, sound effectors)",
     "GPS navigators, fish finders, chartplotters",
     "Routers & networking equipment",
     "Drones & quadcopters",
+    "RC and motorized toys (cars, planes, trains, helicopters)",
     "Weapons (firearms, ammunition, bladed weapons)",
     "Alcohol",
     "Tobacco, cigarettes, vapes, nicotine products",
-    "Narcotics & prescription medicines",
+    "Narcotics & medicines",
     "Military / dual-use items",
     "Game consoles",
     "Automotive / motorcycle oils & petroleum products (hazmat)",
@@ -128,16 +126,19 @@ export const BANNED_ITEMS_SUMMARY = {
     "Ноутбуки, планшеты, собранные ПК",
     "Смарт-часы и фитнес-браслеты",
     "Цифровые фото- и видеокамеры",
-    "Комплектующие ПК (видеокарты, ОЗУ, SSD/HDD, мат.платы, мониторы)",
+    "Линзы и объективы для камер",
+    "Комплектующие ПК (видеокарты, ОЗУ, SSD/HDD, мат.платы, мониторы, клавиатуры, мыши, корпуса)",
     "Электронные компоненты (платы, микросхемы, транзисторы)",
     "Колонки, наушники, саундбары, усилители, микрофоны, диктофоны",
+    "Электронные музыкальные инструменты (DJ-пульты, контроллеры, звуковые процессоры)",
     "GPS-навигаторы, эхолоты, картплоттеры",
     "Роутеры и сетевое оборудование",
     "Дроны и квадрокоптеры",
+    "Радиоуправляемые и моторизованные игрушки (машинки, самолёты, поезда, вертолёты)",
     "Оружие (огнестрельное, патроны, холодное)",
     "Алкоголь",
     "Табак, сигареты, вейпы, никотиновые изделия",
-    "Наркотики и рецептурные лекарства",
+    "Наркотики и лекарства",
     "Товары двойного назначения (военные)",
     "Игровые консоли",
     "Автомобильные/мотоциклетные масла и нефтепродукты (опасные грузы)",
