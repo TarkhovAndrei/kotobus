@@ -1,11 +1,25 @@
 "use client";
 
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useLanguage } from "@/lib/LanguageContext";
+
+declare global {
+  function gtag(...args: unknown[]): void;
+}
 
 export default function SuccessContent() {
   const router = useRouter();
   const { locale } = useLanguage();
+
+  useEffect(() => {
+    gtag("event", "conversion", {
+      send_to: "AW-18133982553/hDITCP-hlqYcENm6-sZD",
+      value: 1.0,
+      currency: "USD",
+      transaction_id: "",
+    });
+  }, []);
 
   const isRu = locale === "ru";
 
