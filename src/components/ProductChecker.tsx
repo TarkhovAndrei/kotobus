@@ -142,22 +142,22 @@ export default function ProductChecker({ url }: ProductCheckerProps) {
 
   return (
     <div
-      className={`mt-3 rounded-lg border ${s.bg} ${s.border} px-4 py-3`}
+      className={`mt-3 overflow-hidden rounded-lg border ${s.bg} ${s.border} px-4 py-3`}
     >
       <div className="flex items-start gap-2">
-        <span className="text-base leading-5">{s.icon}</span>
-        <div className="flex-1 min-w-0">
-          <div className={`flex flex-wrap items-center gap-2`}>
-            <span className={`font-semibold text-sm ${s.text}`}>
+        <span className="shrink-0 text-base leading-5">{s.icon}</span>
+        <div className="min-w-0 flex-1">
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 overflow-hidden">
+            <span className={`shrink-0 font-semibold text-sm ${s.text}`}>
               {s.label}
             </span>
             {product_name && (
-              <span className="truncate text-xs text-gray-500">
+              <span className="min-w-0 truncate text-xs text-gray-500">
                 — {product_name}
               </span>
             )}
           </div>
-          <p className={`mt-1 text-sm ${s.text}`}>{reason}</p>
+          <p className={`mt-1 text-sm break-words ${s.text}`}>{reason}</p>
 
           {price_estimate && (
             <div className="mt-3 rounded-md bg-white/60 border border-stone-200 px-3 py-2">
