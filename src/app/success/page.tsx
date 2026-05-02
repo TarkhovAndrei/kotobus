@@ -1,3 +1,4 @@
+import Script from "next/script";
 import { LanguageProvider } from "@/lib/LanguageContext";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -14,6 +15,14 @@ export default async function SuccessPage({
 
   return (
     <LanguageProvider initialLocale={locale}>
+      <Script id="gtag-conversion" strategy="afterInteractive">{`
+        gtag('event', 'conversion', {
+          'send_to': 'AW-18133982553/hDITCP-hlqYcENm6-sZD',
+          'value': 1.0,
+          'currency': 'USD',
+          'transaction_id': ''
+        });
+      `}</Script>
       <Header />
       <SuccessContent />
       <Footer />
