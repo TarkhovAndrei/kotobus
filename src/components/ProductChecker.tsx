@@ -160,15 +160,13 @@ export default function ProductChecker({ url }: ProductCheckerProps) {
           <p className={`mt-1 text-sm ${s.text}`}>{reason}</p>
 
           {price_estimate && (
-            <div className="mt-3 rounded-md bg-white/60 border border-stone-200 px-3 py-2 text-sm">
-              <div className="flex items-baseline justify-between gap-2">
-                <span className="text-stone-500">
-                  {locale === "ru" ? "Полная стоимость с доставкой" : "Total cost with delivery"}
-                </span>
-                <span className="font-semibold text-stone-900 whitespace-nowrap">
-                  {price_estimate.total_rub.toLocaleString("ru-RU", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ₽
-                </span>
-              </div>
+            <div className="mt-3 rounded-md bg-white/60 border border-stone-200 px-3 py-2">
+              <p className="text-xs text-stone-500">
+                {locale === "ru" ? "Полная стоимость с доставкой" : "Total cost with delivery"}
+              </p>
+              <p className="mt-0.5 text-base font-semibold text-stone-900">
+                {price_estimate.total_rub.toLocaleString("ru-RU", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ₽
+              </p>
             </div>
           )}
         </div>
