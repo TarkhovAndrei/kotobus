@@ -21,9 +21,9 @@ export default function HeroSection() {
           <KotobusLogo className="h-32 w-auto sm:h-40 mx-auto drop-shadow-lg" animated />
         </div>
 
-        <h2 className="text-3xl font-extrabold tracking-tight text-stone-900 sm:text-5xl">
+        <h1 className="text-4xl font-extrabold tracking-tight text-stone-900 sm:text-6xl">
           {t("heroTitle")}
-        </h2>
+        </h1>
         <p className="mx-auto mt-4 max-w-2xl text-lg text-stone-700">
           {t("heroSubtitle")}
         </p>

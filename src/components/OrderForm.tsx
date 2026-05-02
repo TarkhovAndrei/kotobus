@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent, type ChangeEvent } from "react";
+import { useRouter } from "next/navigation";
 import { useLanguage } from "@/lib/LanguageContext";
 import ProductChecker from "./ProductChecker";
 
@@ -40,8 +41,9 @@ function Input({
 }
 
 export default function OrderForm() {
-  const { t } = useLanguage();
-  const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const { t, locale } = useLanguage();
+  const router = useRouter();
+  const [status, setStatus] = useState<"idle" | "submitting" | "error">("idle");
   const [productUrl, setProductUrl] = useState("");
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
@@ -58,28 +60,10 @@ export default function OrderForm() {
         body: JSON.stringify(data),
       });
       if (!res.ok) throw new Error("Failed");
-      setStatus("success");
-      form.reset();
-      setProductUrl("");
+      router.push(`/success?lang=${locale}`);
     } catch {
       setStatus("error");
     }
-  }
-
-  if (status === "success") {
-    return (
-      <div className="mx-auto max-w-2xl rounded-3xl border-2 border-green-200 bg-green-50 p-8 text-center shadow-paw">
-        <div className="text-5xl">🐾</div>
-        <h3 className="mt-3 text-2xl font-extrabold text-green-800">{t("successTitle")}</h3>
-        <p className="mt-2 text-green-700">{t("successMessage")}</p>
-        <button
-          onClick={() => setStatus("idle")}
-          className="mt-6 rounded-full bg-sky-600 px-6 py-2.5 text-sm font-bold text-white shadow-paw transition hover:-translate-y-0.5 hover:bg-sky-700"
-        >
-          {t("submitAnother")}
-        </button>
-      </div>
-    );
   }
 
   return (

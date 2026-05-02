@@ -8,7 +8,7 @@ export const translations = {
     switchLang: "RU",
 
     // Hero
-    heroTitle: "Will deliver your purchase from the USA.",
+    heroTitle: "Kotobus will deliver your purchase from the USA.",
     heroSubtitle:
       "Send Kotobus a link to a product from an American store. It will buy it and deliver it to the post office nearest your address.",
     howItWorks: "How Kotobus works",
@@ -69,7 +69,7 @@ export const translations = {
     switchLang: "EN",
 
     // Hero
-    heroTitle: "Доставит покупку из США.",
+    heroTitle: "Котобус доставит покупку из США.",
     heroSubtitle:
       "Кидайте Котобусу ссылку на товар из американского магазина. Он его купит и привезёт до ближайшего отделения почты.",
     howItWorks: "Как работает Котобус",
