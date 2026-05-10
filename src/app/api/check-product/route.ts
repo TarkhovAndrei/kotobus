@@ -8,7 +8,7 @@ const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 const USD_TO_EUR = 0.92;
 const PRICE_CAP_EUR = 200;
 const DELIVERY_FEE_USD = 70;
-const OVERHEAD_USD = 200;
+const OVERHEAD_USD = 100;
 const CA_SALES_TAX_RATE = 0.0725;
 
 type ProductInfo = {
