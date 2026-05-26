@@ -19,8 +19,7 @@ export async function POST(request: Request) {
       inn,
     } = body;
 
-    // Validate required fields
-    if (!productLink || !fullName || !email || !address) {
+    if (!productLink || !email) {
       return NextResponse.json(
         { error: "Missing required fields" },
         { status: 400 }

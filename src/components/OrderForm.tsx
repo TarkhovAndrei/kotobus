@@ -9,16 +9,33 @@ export default function OrderForm() {
   const { t, locale } = useLanguage();
   const router = useRouter();
   const [productUrl, setProductUrl] = useState("");
+  const [status, setStatus] = useState<"idle" | "submitting" | "error">("idle");
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    setStatus("submitting");
     const form = e.currentTarget;
     const data = Object.fromEntries(new FormData(form));
-    const params = new URLSearchParams({ lang: locale });
-    if (data.productLink) params.set("link", String(data.productLink));
-    if (data.productNotes) params.set("notes", String(data.productNotes));
-    if (data.email) params.set("email", String(data.email));
-    router.push(`/order?${params.toString()}`);
+
+    try {
+      const res = await fetch("/api/order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          productLink: data.productLink,
+          productNotes: data.productNotes,
+          email: data.email,
+        }),
+      });
+      if (!res.ok) throw new Error("Failed");
+      const params = new URLSearchParams({ lang: locale });
+      if (data.productLink) params.set("link", String(data.productLink));
+      if (data.productNotes) params.set("notes", String(data.productNotes));
+      if (data.email) params.set("email", String(data.email));
+      router.push(`/order?${params.toString()}`);
+    } catch {
+      setStatus("error");
+    }
   }
 
   return (
@@ -72,11 +89,16 @@ export default function OrderForm() {
         </div>
       </fieldset>
 
+      {status === "error" && (
+        <p className="text-center text-sm text-red-600">{t("errorMessage")}</p>
+      )}
+
       <button
         type="submit"
-        className="w-full rounded-full bg-gradient-to-br from-sky-600 to-sky-700 py-3.5 text-lg font-extrabold text-white shadow-paw transition hover:-translate-y-0.5 hover:from-sky-700 hover:to-sky-800"
+        disabled={status === "submitting"}
+        className="w-full rounded-full bg-gradient-to-br from-sky-600 to-sky-700 py-3.5 text-lg font-extrabold text-white shadow-paw transition hover:-translate-y-0.5 hover:from-sky-700 hover:to-sky-800 disabled:opacity-50 disabled:hover:translate-y-0"
       >
-        🐱 {t("submitOrder")}
+        {status === "submitting" ? `🐾 ${t("submitting")}` : `🐱 ${t("submitOrder")}`}
       </button>
     </form>
   );
