@@ -45,6 +45,9 @@ export const translations = {
     inn: "Tax ID (for customs)",
     innPlaceholder: "12-digit personal taxpayer number",
 
+    orderPageMessage:
+      "We'll contact you soon about your order — if you'd like to speed up processing, fill out the form with your address in advance!",
+
     submitOrder: "Send order",
     submitting: "Sending...",
     successTitle: "Order sent!",
@@ -105,6 +108,9 @@ export const translations = {
     zipPlaceholder: "123456",
     inn: "ИНН (для таможни)",
     innPlaceholder: "12-значный ИНН физического лица",
+
+    orderPageMessage:
+      "Мы свяжемся с вами в ближайшее время по поводу вашего заказа, если вы хотите ускорить его обработку — заполните форму с вашим адресом заранее!",
 
     submitOrder: "Отправить заказ",
     submitting: "Отправка...",
